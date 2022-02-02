@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 1429292619613835599}
   - component: {fileID: 1429292619613835593}
   - component: {fileID: 1429292619613835588}
-  - component: {fileID: 1429292619613835594}
+  - component: {fileID: 7773470134448599509}
   - component: {fileID: 1429292619613835595}
   - component: {fileID: 9166427539706510261}
   - component: {fileID: 1429292619613835592}
@@ -332,7 +332,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429292619613835589}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -439,7 +439,7 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1429292619613835594
+--- !u!114 &7773470134448599509
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -448,7 +448,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1429292619613835589}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: 54c9647dc784a46bca664910f182491e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1

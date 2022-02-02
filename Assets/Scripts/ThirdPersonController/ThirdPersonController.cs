@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 /* Note: 角色和胶囊的动画都是通过控制器调用的，使用动画师的空检查。*/
 
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(NetworkObject))]
 public class ThirdPersonController : NetworkBehaviour
 {
 	[Header("Player")]
@@ -152,25 +152,35 @@ public class ThirdPersonController : NetworkBehaviour
 		_controller = GetComponent<CharacterController>();
 		_input = GetComponent<InputHandler>();
 		_cinemachineVirtualCamera = GameObject.Find("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>();
-		_cinemachineVirtualCamera.Follow = CinemachineCameraTarget.transform;
+		if (IsClient && IsOwner)
+		{
+			_cinemachineVirtualCamera.Follow = CinemachineCameraTarget.transform;
+			GetComponent<PlayerInput>().enabled = true;
+		}
+		
 
 		AssignAnimationIDs();
 
 		// 在开始时，重置剩余等待时间
 		_jumpTimeoutDelta = JumpTimeout;
 		_fallTimeoutDelta = FallTimeout;
+		
 	}
 
 	private void Update()
 	{
-		JumpAndGravity();
-		GroundedCheck();
-		Move();
+		if (IsClient && IsOwner)
+		{
+			JumpAndGravity();
+			GroundedCheck();
+			Move();
+		}
 	}
 
 	private void LateUpdate()
 	{
-		CameraRotation();
+		if(IsClient && IsOwner)
+			CameraRotation();
 	}
 
 	/// <summary>
@@ -198,7 +208,8 @@ public class ThirdPersonController : NetworkBehaviour
 		// 如果使用 Animator，则更新_animIDGrounded变量。
 		if (_hasAnimator)
 		{
-			_animator.SetBool(_animIDGrounded, Grounded);
+			// _animator.SetBool(_animIDGrounded, Grounded);
+			SetBoolForAnimatorServerRpc(_animIDGrounded, Grounded);
 		}
 	}
 
@@ -279,15 +290,17 @@ public class ThirdPersonController : NetworkBehaviour
 
 
 		Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-
+		
 		// 移动Player（水平面移动量+垂直移动量）
 		_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
 		// 更新 animator 
 		if (_hasAnimator)
 		{
-			_animator.SetFloat(_animIDSpeed, _animationBlend);
-			_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+			// _animator.SetFloat(_animIDSpeed, _animationBlend);
+			// _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+			SetFloatForAnimatorServerRpc(_animIDSpeed, _animationBlend);
+			SetFloatForAnimatorServerRpc(_animIDMotionSpeed, inputMagnitude);
 		}
 	}
 
@@ -301,8 +314,10 @@ public class ThirdPersonController : NetworkBehaviour
 			// 更新 animator 
 			if (_hasAnimator)
 			{
-				_animator.SetBool(_animIDJump, false);
-				_animator.SetBool(_animIDFreeFall, false);
+				// _animator.SetBool(_animIDJump, false);
+				// _animator.SetBool(_animIDFreeFall, false);
+				SetBoolForAnimatorServerRpc(_animIDJump, false);
+				SetBoolForAnimatorServerRpc(_animIDFreeFall, false);
 			}
 
 			// 阻止我们落地后速度无限下降
@@ -320,7 +335,8 @@ public class ThirdPersonController : NetworkBehaviour
 				// update animator
 				if (_hasAnimator)
 				{
-					_animator.SetBool(_animIDJump, true);
+					// _animator.SetBool(_animIDJump, true);
+					SetBoolForAnimatorServerRpc(_animIDJump, true);
 				}
 			}
 
@@ -345,7 +361,8 @@ public class ThirdPersonController : NetworkBehaviour
 				// 如果到达下落CD，这播放自由下落动画
 				if (_hasAnimator)
 				{
-					_animator.SetBool(_animIDFreeFall, true);
+					// _animator.SetBool(_animIDFreeFall, true);
+					SetBoolForAnimatorServerRpc(_animIDFreeFall, true);
 				}
 			}
 
@@ -389,5 +406,36 @@ public class ThirdPersonController : NetworkBehaviour
 		
 		// 当被选中时，在接地的碰撞器的位置和匹配的半径上画一个Gizmos。
 		Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
+	}
+
+
+	[ServerRpc]
+	private void SetBoolForAnimatorServerRpc(int id, bool value)
+	{
+		_animator.SetBool(id, value);
+	}
+	
+	[ServerRpc]
+	private void SetFloatForAnimatorServerRpc(int id, float value)
+	{
+		_animator.SetFloat(id, value);
+	}
+	
+	[ServerRpc]
+	private void SetIntegerForAnimatorServerRpc(int id, int value)
+	{
+		_animator.SetInteger(id, value);
+	}
+	
+	[ServerRpc]
+	private void SetTriggerForAnimatorServerRpc(int id)
+	{
+		_animator.SetTrigger(id);
+	}
+	
+	[ServerRpc]
+	private void ResetTriggerForAnimatorServerRpc(int id)
+	{
+		_animator.ResetTrigger(id);
 	}
 }

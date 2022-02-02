@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5960393657174156840}
   - component: {fileID: 5960393657174156841}
   - component: {fileID: 5960393657174156842}
+  - component: {fileID: 6410036563774894065}
+  - component: {fileID: 734363183025695894}
   m_Layer: 0
   m_Name: Network Manager For WAN
   m_TagString: Untagged
@@ -90,3 +92,27 @@ MonoBehaviour:
     Address: 127.0.0.1
     Port: 7777
     ServerListenAddress: 
+--- !u!114 &6410036563774894065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5960393657174156843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9511f99324f4bb04797e22fcf23449de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &734363183025695894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5960393657174156843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8349390f6e42afd469b29a9d0ab0ec99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
