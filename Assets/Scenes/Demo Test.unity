@@ -26094,6 +26094,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3212217372971227803, guid: da3492b1cf8b2914ab4b9a851e8e5a38, type: 3}
+      propertyPath: NetworkConfig.PlayerPrefab
+      value: 
+      objectReference: {fileID: 1429292619613835589, guid: 91e51cd46864c374d96b5bcc82eb650e, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da3492b1cf8b2914ab4b9a851e8e5a38, type: 3}
 --- !u!1001 &5960393657833476827
