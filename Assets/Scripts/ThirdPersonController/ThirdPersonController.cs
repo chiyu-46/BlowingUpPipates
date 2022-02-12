@@ -61,6 +61,9 @@ public class ThirdPersonController : NetworkBehaviour
 	[Tooltip("指针运动可以使摄像机旋转的阈值。指针移动距离的平方小于此值时，摄像机不跟随指针")]
 	[SerializeField]
 	private float _threshold = 0.01f;
+	[Tooltip("摄像机旋转灵敏度。用于瞄准时减慢视角旋转速度，使更容易瞄准")]
+	[SerializeField]
+	private float sensibility = 1f;
 
 	// cinemachine
 	/// <summary>
@@ -136,6 +139,10 @@ public class ThirdPersonController : NetworkBehaviour
 	/// 是否使用Animator
 	/// </summary>
 	private bool _hasAnimator;
+	/// <summary>
+	/// 是否在移动时旋转身体（用于瞄准时使身体始终朝向瞄准方向）
+	/// </summary>
+	private bool _rotateOnMove = true;
 
 	private void Awake()
 	{
@@ -221,8 +228,8 @@ public class ThirdPersonController : NetworkBehaviour
 		// 如果有输入，并且摄像机位置不固定的话
 		if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
 		{
-			_cinemachineTargetYaw += _input.look.x * Time.deltaTime;
-			_cinemachineTargetPitch += _input.look.y * Time.deltaTime;
+			_cinemachineTargetYaw += _input.look.x * Time.deltaTime * sensibility;
+			_cinemachineTargetPitch += _input.look.y * Time.deltaTime * sensibility;
 		}
 
 		// 钳制我们的旋转，使我们的值被限制在360度以内
@@ -282,10 +289,13 @@ public class ThirdPersonController : NetworkBehaviour
 		{
 			// 目标旋转角度 = 输入的Vector2的弧度 * 弧度转角度常数 + mainCamera的全局角度的水平面分量
 			_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-			// 平滑地转身。
-			float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
-			// 旋转到相对于相机位置的输入方向
-			transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+			if (_rotateOnMove)
+			{
+				// 平滑地转身。
+				float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
+				// 旋转到相对于相机位置的输入方向
+				transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+			}
 		}
 
 
@@ -437,5 +447,23 @@ public class ThirdPersonController : NetworkBehaviour
 	private void ResetTriggerForAnimatorServerRpc(int id)
 	{
 		_animator.ResetTrigger(id);
+	}
+
+	/// <summary>
+	/// 设置摄像机旋转灵敏度。
+	/// </summary>
+	/// <param name="newSensibility">新的摄像机旋转灵敏度。</param>
+	public void SetSensibility(float newSensibility)
+	{
+		sensibility = newSensibility;
+	}
+
+	/// <summary>
+	/// 设置是否在移动时旋转身体。
+	/// </summary>
+	/// <param name="newRotateOnMove">新状态值。</param>
+	public void SetRotateOnMove(bool newRotateOnMove)
+	{
+		_rotateOnMove = newRotateOnMove;
 	}
 }

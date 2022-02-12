@@ -264,6 +264,7 @@ GameObject:
   - component: {fileID: 9166427539706510261}
   - component: {fileID: 1429292619613835592}
   - component: {fileID: 1429292619613835598}
+  - component: {fileID: 7499903584963931780}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -285,6 +286,7 @@ Transform:
   - {fileID: 6711424633676916761}
   - {fileID: 4725416865154158381}
   - {fileID: 3265128515373561190}
+  - {fileID: 4286722048918604818}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -337,7 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 4419d82f33d36e848b3ed5af4c8da37e, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: 917b194392e3ea641bb7eba3dfb66530, type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -514,6 +516,8 @@ MonoBehaviour:
   look: {x: 0, y: 0}
   jump: 0
   sprint: 0
+  aim: 0
+  shoot: 0
   analogMovement: 1
   cursorLocked: 1
   cursorInputForLook: 1
@@ -550,6 +554,26 @@ MonoBehaviour:
   CameraAngleOverride: 0
   LockCameraPosition: 0
   _threshold: 0.01
+  sensibility: 1
+--- !u!114 &7499903584963931780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429292619613835589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5c9ece30cacd7e469b3042c0f8be7aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalSensitivity: 1
+  aimSensitivity: 0.5
+  aimColliderLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  pfBulletProjectile: {fileID: 4209795057775410, guid: 2bbc309bc861d5c4eb979ce746e6b6ce, type: 3}
+  spawnBulletPosition: {fileID: 4286722048918604818}
 --- !u!1 &1460444317356419141
 GameObject:
   m_ObjectHideFlags: 0
@@ -2410,6 +2434,36 @@ Transform:
   - {fileID: 6386692264378998802}
   m_Father: {fileID: 8916782743713485456}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8250779826267467774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4286722048918604818}
+  m_Layer: 0
+  m_Name: SpawnBulletPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4286722048918604818
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8250779826267467774}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.242, z: 0.237}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1773871503890959359}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8381151410945655471
 GameObject:

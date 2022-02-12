@@ -9,6 +9,10 @@ public class InputHandler : MonoBehaviour
     public bool jump;
     [Tooltip("冲刺")]
     public bool sprint;
+    [Tooltip("瞄准")]
+    public bool aim;
+    [Tooltip("射击")]
+    public bool shoot;
 
     [Header("Movement Settings")]
     [Tooltip("是否使用输入模拟真实运动（调整跑步动画播放速度和角色移动速度）")]
@@ -45,6 +49,16 @@ public class InputHandler : MonoBehaviour
     {
         SprintInput(value.isPressed);
     }
+    
+    public void OnAim(InputValue value)
+    {
+        AimInput(value.isPressed);
+    }
+
+    public void OnShoot(InputValue value)
+    {
+        ShootInput(value.isPressed);
+    }
 #endif
 
 
@@ -68,6 +82,15 @@ public class InputHandler : MonoBehaviour
         sprint = newSprintState;
     }
     
+    public void AimInput(bool newAimState)
+    {
+        aim = newAimState;
+    }
+
+    public void ShootInput(bool newShootState)
+    {
+        shoot = newShootState;
+    }
 #if !UNITY_IOS || !UNITY_ANDROID
     
     // 如果是移动端，判断焦点还需要用到OnApplicationPause()。但此次暂时只考虑捕获鼠标功能，移动端不使用鼠标，暂不考虑。
