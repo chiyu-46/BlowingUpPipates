@@ -113,6 +113,14 @@ public class ThirdPersonController : NetworkBehaviour
 	/// </summary>
 	private int _animIDSpeed;
 	/// <summary>
+	/// 动画变量ID。角色当前速度的左右方向分量。
+	/// </summary>
+	private int _animIDSpeed_x;
+	/// <summary>
+	/// 动画变量ID。角色当前速度的前后方向分量。
+	/// </summary>
+	private int _animIDSpeed_z;
+	/// <summary>
 	/// 动画变量ID。角色是否着地。
 	/// </summary>
 	private int _animIDGrounded;
@@ -196,6 +204,8 @@ public class ThirdPersonController : NetworkBehaviour
 	private void AssignAnimationIDs()
 	{
 		_animIDSpeed = Animator.StringToHash("Speed");
+		_animIDSpeed_x = Animator.StringToHash("Speed_x");
+		_animIDSpeed_z = Animator.StringToHash("Speed_z");
 		_animIDGrounded = Animator.StringToHash("Grounded");
 		_animIDJump = Animator.StringToHash("Jump");
 		_animIDFreeFall = Animator.StringToHash("FreeFall");
@@ -309,7 +319,9 @@ public class ThirdPersonController : NetworkBehaviour
 		{
 			// _animator.SetFloat(_animIDSpeed, _animationBlend);
 			// _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-			SetFloatForAnimatorServerRpc(_animIDSpeed, _animationBlend);
+			// SetFloatForAnimatorServerRpc(_animIDSpeed, _animationBlend);
+			SetFloatForAnimatorServerRpc(_animIDSpeed_x, Vector3.Dot(transform.right, targetDirection.normalized * _speed) / SprintSpeed);
+			SetFloatForAnimatorServerRpc(_animIDSpeed_z, Vector3.Dot(transform.forward, targetDirection.normalized * _speed) / SprintSpeed);
 			SetFloatForAnimatorServerRpc(_animIDMotionSpeed, inputMagnitude);
 		}
 	}
